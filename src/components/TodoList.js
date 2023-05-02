@@ -38,10 +38,9 @@ const TodoList = () => {
     // Firestore 에서 할 일 목록을 조회합니다.
     const results = await getDocs(q);
     const newTodos = [];
-
+    
     // 가져온 할 일 목록을 newTodos 배열에 담습니다.
     results.docs.forEach((doc) => {
-      // console.log(doc.data());
       // id 값을 Firestore 에 저장한 값으로 지정하고, 나머지 데이터를 newTodos 배열에 담습니다.
       newTodos.push({ id: doc.id, ...doc.data() });
     });
