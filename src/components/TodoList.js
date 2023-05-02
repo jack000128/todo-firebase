@@ -76,9 +76,7 @@ const TodoList = () => {
     });
 
     // id 값을 Firestore 에 저장한 값으로 지정합니다.
-    setTodos([...todos, { id: docRef.id, text: input, completed: false, datetime: dateTime }]);
-    // let res = todos.sort((a, b) => a.dateTime - b.dateTime)
-    // setTodos(res)
+    setTodos([{ id: docRef.id, text: input, completed: false, datetime: dateTime }, ...todos]);
     setInput("");
   };
 
@@ -165,7 +163,7 @@ const TodoList = () => {
         </button>
       </div>
       {/* 할 일 목록을 렌더링합니다. */}
-      <ul>
+      <ul>  
         {todos.map((todo) => (
           <TodoItem
             key={todo.id}
