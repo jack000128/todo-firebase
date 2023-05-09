@@ -6,6 +6,7 @@
 import React, { useState, useEffect } from "react";
 import { useSession } from "next-auth/react";
 import TodoItem from "@/components/TodoItem";
+import TodoItemAdmin from "@/components/TodoItemAdmin";
 import styles from "@/styles/TodoList.module.css";
 
 // firebase 관련 모듈을 불러옵니다.
@@ -117,53 +118,13 @@ const Admin = () => {
     <div className={styles.container}>
       <button onClick={() => router.push('/')}>내 페이지</button>
       <h1 className="text-xl mb-4 font-bold underline underline-offset-4 decoration-wavy">모두의 Todo List</h1>
-      {/* 할 일을 입력받는 텍스트 필드입니다. */}
-      <input
-        type="text"
-        // className={styles.itemInput}
-        // -- itemInput CSS code --
-        // input[type="text"].itemInput {
-        //   width: 100%;
-        //   padding: 5px;
-        //   margin-bottom: 10px;
-        // }
-        className="w-full p-1 mb-4 border border-gray-300 rounded"
-        value={input}
-        onChange={(e) => setInput(e.target.value)}
-      />
-      {/* 할 일을 추가하는 버튼입니다. */}
-      <div className="grid">
-        <button
-          // className={styles.addButton}
-          // -- addButton CSS code --
-          // button.addButton {
-          //   padding: 5px;
-          //   background-color: #0070f3;
-          //   color: white;
-          //   border: 1px solid #0070f3;
-          //   border-radius: 5px;
-          //   cursor: pointer;
-          // }
-          //
-          // button.addButton:hover {
-          //   background-color: #fff;
-          //   color: #0070f3;
-          // }
-          className={`w-40
-                      justify-self-end
-                      p-1 mb-4
-                    bg-blue-500 text-white
-                      border border-blue-500 rounded
-                    hover:bg-white hover:text-blue-500`}
-          onClick={addTodo}
-        >
-          Add Todo
-        </button>
-      </div>
+      
+      
       {/* 할 일 목록을 렌더링합니다. */}
+      
       <ul>
         {todos.map((todo) => (
-          <TodoItem key={todo.id} todo={todo} onToggle={() => toggleTodo(todo.id)} onDelete={() => deleteTodo(todo.id)} />
+          <TodoItemAdmin key={todo.id} todo={todo} />
         ))}
       </ul>
     </div>
