@@ -72,7 +72,7 @@ const TodoList = () => {
     const docRef = await addDoc(todoCollection, {
       text: input,
       completed: false,
-      datetime: dateTime
+      datetime: dateTime,
     });
 
     // id 값을 Firestore 에 저장한 값으로 지정합니다.
