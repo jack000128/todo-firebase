@@ -3,7 +3,8 @@ import { useRouter } from "next/router";
 
 export default function Siginin() {
   const router = useRouter();
-  const { data: session } = useSession();
+  const { data: session, status } = useSession();
+  console.log(session)
 
   return (
     <div className="sign-wrapper">

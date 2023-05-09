@@ -10,29 +10,17 @@ import styles from "@/styles/TodoList.module.css";
 
 // firebase 관련 모듈을 불러옵니다.
 import { db } from "@/firebase";
-import {
-  collection,
-  query,
-  doc,
-  getDocs,
-  addDoc,
-  updateDoc,
-  deleteDoc,
-  orderBy,
-  where,
-} from "firebase/firestore";
+import { collection, query, doc, getDocs, addDoc, updateDoc, deleteDoc, orderBy, where } from "firebase/firestore";
 import { useRouter } from "next/router";
-
 
 // DB의 todos 컬렉션 참조를 만듭니다. 컬렉션 사용시 잘못된 컬렉션 이름 사용을 방지합니다.
 const todoCollection = collection(db, "todos");
 
 // TodoList 컴포넌트를 정의합니다.
-const TodoList = () => {
+const Admin = () => {
   // 상태를 관리하는 useState 훅을 사용하여 할 일 목록과 입력값을 초기화합니다.
   const [todos, setTodos] = useState([]);
   const [input, setInput] = useState("");
-  const [isAdmin, setIsAdmin] = useState(false);
   const { data } = useSession();
 
   const router = useRouter()
@@ -41,21 +29,14 @@ const TodoList = () => {
     // Firestore 쿼리를 만듭니다.
     // const q = query(todoCollection);
     // const q = query(collection(db, "todos"), where("user", "==", user.uid));
-    if (!data?.user?.name) return
-    if (data?.user?.name == "김명원") {
-      setIsAdmin(true);
-    }
-    
-    const q = query(
-      todoCollection,
-      where("userId", "==", data?.user?.id),
-      orderBy("datetime", "desc")
-    );
+    if (!data?.user?.name) return;
+
+    const q = query(todoCollection, orderBy("datetime", "desc"));
 
     // Firestore 에서 할 일 목록을 조회합니다.
     const results = await getDocs(q);
     const newTodos = [];
-    
+
     // 가져온 할 일 목록을 newTodos 배열에 담습니다.
     results.docs.forEach((doc) => {
       // id 값을 Firestore 에 저장한 값으로 지정하고, 나머지 데이터를 newTodos 배열에 담습니다.
@@ -83,7 +64,7 @@ const TodoList = () => {
 
     const date = new Date().toISOString().split("T")[0];
     const time = new Date().toTimeString().split(" ")[0];
-    const dateTime = date + ' ' + time
+    const dateTime = date + " " + time;
 
     // Firestore 에 추가한 할 일을 저장합니다.
     const docRef = await addDoc(todoCollection, {
@@ -131,20 +112,11 @@ const TodoList = () => {
     );
   };
 
-
   // 컴포넌트를 렌더링합니다.
   return (
     <div className={styles.container}>
-      {
-        isAdmin
-        ? (
-          <button onClick={() => router.push("admin/page")}>관리자 페이지</button>
-          )
-        : null
-      }
-      <h1 className="text-xl mb-4 font-bold underline underline-offset-4 decoration-wavy">
-        { data?.user?.name }'s Todo List
-      </h1>
+      <button onClick={() => router.push('/')}>내 페이지</button>
+      <h1 className="text-xl mb-4 font-bold underline underline-offset-4 decoration-wavy">모두의 Todo List</h1>
       {/* 할 일을 입력받는 텍스트 필드입니다. */}
       <input
         type="text"
@@ -189,18 +161,13 @@ const TodoList = () => {
         </button>
       </div>
       {/* 할 일 목록을 렌더링합니다. */}
-      <ul>  
+      <ul>
         {todos.map((todo) => (
-          <TodoItem
-            key={todo.id}
-            todo={todo}
-            onToggle={() => toggleTodo(todo.id)}
-            onDelete={() => deleteTodo(todo.id)}
-          />
+          <TodoItem key={todo.id} todo={todo} onToggle={() => toggleTodo(todo.id)} onDelete={() => deleteTodo(todo.id)} />
         ))}
       </ul>
     </div>
   );
 };
 
-export default TodoList;
+export default Admin;
